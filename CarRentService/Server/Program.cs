@@ -1,4 +1,7 @@
 using CarRentService.Server.Models;
+using CarRentService.Server.Repositories;
+using CarRentService.Server.Repositories.Contracts;
+using CarRentService.Server.UOF;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,8 +19,20 @@ namespace CarRentService
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
 
+            builder.Services.AddSwaggerGen();
+
             builder.Services.AddDbContext<CarRentServiceContext>(options =>
                     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+            // Repositories
+            builder.Services.AddScoped<ICarRepository, CarRepository>();
+            builder.Services.AddScoped<IClientRepository, ClientRepository>();
+            builder.Services.AddScoped<IFineRepository, FineRepository>();
+            builder.Services.AddScoped<IRegularClientRepository, RegularClientRepository>();
+            builder.Services.AddScoped<IRentedCarRepository, RentedCarRepository>();
+
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             var app = builder.Build();
 
@@ -31,6 +46,12 @@ namespace CarRentService
                 app.UseExceptionHandler("/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
+            }
+
+            if(app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
             }
 
             app.UseHttpsRedirection();
