@@ -1,3 +1,4 @@
+using CarRentService.Server.AutomapperProfile;
 using CarRentService.Server.Models;
 using CarRentService.Server.Repositories;
 using CarRentService.Server.Repositories.Contracts;
@@ -33,6 +34,9 @@ namespace CarRentService
             builder.Services.AddScoped<IRentedCarRepository, RentedCarRepository>();
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            // Automapper
+            builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
             var app = builder.Build();
 
