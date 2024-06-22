@@ -15,7 +15,7 @@ namespace CarRentService.Server.Models
 
         public CarRentServiceContext(DbContextOptions<CarRentServiceContext> options) : base(options)
         {
-            Database.EnsureDeleted();
+            //Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
@@ -25,11 +25,11 @@ namespace CarRentService.Server.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Car>().HasKey(b => b.Code);
-            modelBuilder.Entity<Client>().HasKey(b => b.ClientId);
-            modelBuilder.Entity<Fine>().HasKey(b => b.Code);
-            modelBuilder.Entity<RegularClient>().HasKey(b => b.ClientId);
-            modelBuilder.Entity<RentedCar>().HasKey(b => b.RentId);
+            modelBuilder.Entity<Car>().HasKey(b => b.Id);
+            modelBuilder.Entity<Client>().HasKey(b => b.Id);
+            modelBuilder.Entity<Fine>().HasKey(b => b.Id);
+            modelBuilder.Entity<RegularClient>().HasKey(b => b.Id);
+            modelBuilder.Entity<RentedCar>().HasKey(b => b.Id);
 
             modelBuilder.Entity<RentedCar>().HasMany(r => r.Fines).WithMany(f => f.RentedCars).UsingEntity("temp_table");
         }

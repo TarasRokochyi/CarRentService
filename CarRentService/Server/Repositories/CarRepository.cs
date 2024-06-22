@@ -1,5 +1,6 @@
 ﻿using CarRentService.Server.Models;
 using CarRentService.Server.Repositories.Contracts;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarRentService.Server.Repositories
 {
@@ -7,6 +8,11 @@ namespace CarRentService.Server.Repositories
     {
         public CarRepository(CarRentServiceContext context) : base(context)
         {
+        }
+
+        public async Task<Car> GetByCodeAsync(string code)
+        {
+            return await table.FirstAsync(c => c.Code == code);
         }
     }
 }

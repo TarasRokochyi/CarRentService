@@ -2,7 +2,7 @@
 {
     public class RentedCar
     {
-        public int RentId { get; set; }
+        public int Id { get; set; }
         public DateTime RentDate { get; set; }
         public DateTime ReturnDate { get; set; }
         

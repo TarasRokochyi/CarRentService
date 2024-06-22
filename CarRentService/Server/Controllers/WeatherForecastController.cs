@@ -1,4 +1,5 @@
 using CarRentService.Server.Models;
+using CarRentService.Server.Repositories.Contracts;
 using CarRentService.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,18 +16,23 @@ namespace CarRentService.Server.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
-        private readonly CarRentServiceContext _context;
+        private readonly ICarRepository carRepository;
+        private CarRentServiceContext context;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, CarRentServiceContext context)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, ICarRepository carRepository, CarRentServiceContext context)
         {
             _logger = logger;
-            _context = context;
+            this.carRepository = carRepository;
+            this.context = context;
         }
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IEnumerable<WeatherForecast> Get()
         {
-            var res = _context.Cars.Select(c => c.Code);
+            var res = carRepository.AddAsync(new Car { Code = "kj31lkj", Brand = "nissan", Cost = 200409, RentalCost = 3000});
+            context.SaveChanges();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),
