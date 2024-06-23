@@ -1,7 +1,8 @@
-﻿namespace CarRentService.Server.DTOs
+﻿namespace CarRentService.Shared.DTOs
 {
     public class CarDTO
     {
+        public int Id { get; set; }
         public string Code { get; set; }
         public string Brand { get; set; }
         public double Cost { get; set; }

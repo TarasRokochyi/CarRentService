@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using CarRentService.Server.DTOs;
+using CarRentService.Shared.DTOs;
 using CarRentService.Server.Models;
 using CarRentService.Server.Services.Contracts;
 using CarRentService.Server.UOF;
 
-namespace FineRentService.Server.Services
+namespace CarRentService.Server.Services
 {
     public class FineService : IFineService
     {
@@ -32,7 +32,7 @@ namespace FineRentService.Server.Services
             }
         }
 
-        public async Task DeleteFineFromSystem(int id, CancellationToken cancellationToken)
+        public async Task DeleteFineFromSystemAsync(int id, CancellationToken cancellationToken)
         {
             var fine_to_delete = await _unitOfWork.FineRepository.GetByIdAsync(id);
             if (fine_to_delete == null)
@@ -55,6 +55,12 @@ namespace FineRentService.Server.Services
         {
             var all_fines = await _unitOfWork.FineRepository.GetAllAsync();
             return _mapper.Map<IEnumerable<FineDTO>>(all_fines);
+        }
+
+        public async Task<FineDTO> GetFineByIdAsync(int id, CancellationToken cancellationToken)
+        {
+            var fine = await _unitOfWork.FineRepository.GetByIdAsync(id);
+            return _mapper.Map<FineDTO>(fine);
         }
 
         public async Task<Fine> UpdateFineInSystemAsync(int id, FineDTO fineDTO, CancellationToken cancellationToken)

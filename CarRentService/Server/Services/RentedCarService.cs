@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CarRentService.Server.DTOs;
+using CarRentService.Shared.DTOs;
 using CarRentService.Server.Models;
 using CarRentService.Server.Services.Contracts;
 using CarRentService.Server.UOF;
@@ -17,7 +17,7 @@ namespace CarRentService.Server.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<RentedCar> AddRentedCarToSystem(RentedCarDTO rentedCarDTO, CancellationToken cancellationToken)
+        public async Task<RentedCar> AddRentedCarToSystemAsync(RentedCarDTO rentedCarDTO, CancellationToken cancellationToken)
         {
             try
             {
@@ -32,7 +32,7 @@ namespace CarRentService.Server.Services
             }
         }
 
-        public async Task DeleteRentedCarInSystem(int id, CancellationToken cancellationToken)
+        public async Task DeleteRentedCarInSystemAsync(int id, CancellationToken cancellationToken)
         {
             var rentedCar_to_delete = await _unitOfWork.RentedCarRepository.GetByIdAsync(id);
             if (rentedCar_to_delete == null)
@@ -51,13 +51,19 @@ namespace CarRentService.Server.Services
             }
         }
 
-        public async Task<IEnumerable<RentedCarDTO>> GetAllRentedCars(CancellationToken cancellationToken)
+        public async Task<IEnumerable<ShortRentedCarDTO>> GetAllRentedCarsAsync(CancellationToken cancellationToken)
         {
             var all_rentedCars = await _unitOfWork.RentedCarRepository.GetAllAsync();
-            return _mapper.Map<IEnumerable<RentedCarDTO>>(all_rentedCars);
+            return _mapper.Map<IEnumerable<ShortRentedCarDTO>>(all_rentedCars);
         }
 
-        public async Task<RentedCar> UpdateRentedCarInSystem(int id, RentedCarDTO rentedCarDTO, CancellationToken cancellationToken)
+        public async Task<RentedCarDTO> GetRentedCarByIdAsync(int id, CancellationToken cancellationToken)
+        {
+            var rented_car = await _unitOfWork.RentedCarRepository.GetByIdAsync(id);
+            return _mapper.Map<RentedCarDTO>(rented_car);
+        }
+
+        public async Task<RentedCar> UpdateRentedCarInSystemAsync(int id, RentedCarDTO rentedCarDTO, CancellationToken cancellationToken)
         {
             var rentedCar_to_update = await _unitOfWork.RentedCarRepository.GetByIdAsync(id);
             if (rentedCar_to_update == null)

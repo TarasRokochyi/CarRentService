@@ -2,6 +2,8 @@ using CarRentService.Server.AutomapperProfile;
 using CarRentService.Server.Models;
 using CarRentService.Server.Repositories;
 using CarRentService.Server.Repositories.Contracts;
+using CarRentService.Server.Services;
+using CarRentService.Server.Services.Contracts;
 using CarRentService.Server.UOF;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
@@ -32,8 +34,13 @@ namespace CarRentService
             builder.Services.AddScoped<IFineRepository, FineRepository>();
             builder.Services.AddScoped<IRegularClientRepository, RegularClientRepository>();
             builder.Services.AddScoped<IRentedCarRepository, RentedCarRepository>();
-
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            // Services
+            builder.Services.AddScoped<ICarService, CarService>();
+            builder.Services.AddScoped<IClientService, ClientService>();
+            builder.Services.AddScoped<IFineService, FineService>();
+            builder.Services.AddScoped<IRentedCarService, RentedCarService>();
 
             // Automapper
             builder.Services.AddAutoMapper(typeof(Program).Assembly);

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CarRentService.Server.DTOs;
+using CarRentService.Shared.DTOs;
 using CarRentService.Server.Models;
 using CarRentService.Server.Services.Contracts;
 using CarRentService.Server.UOF;
@@ -52,10 +52,16 @@ namespace CarRentService.Server.Services
             }
         }
 
-        public async Task<IEnumerable<CarDTO>> GetAllCarsAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<ShortCarDTO>> GetAllCarsAsync(CancellationToken cancellationToken)
         {
             var all_cars = await _unitOfWork.CarRepository.GetAllAsync();
-            return _mapper.Map<IEnumerable<CarDTO>>(all_cars);
+            return _mapper.Map<IEnumerable<ShortCarDTO>>(all_cars);
+        }
+
+        public async Task<CarDTO> GetCarByIdAsync(int id, CancellationToken cancellationToken)
+        {
+            var car = await _unitOfWork.CarRepository.GetByIdAsync(id);
+            return _mapper.Map<CarDTO>(car);
         }
 
         public async Task<Car> UpdateCarInSystemAsync(int id, CarDTO carDTO, CancellationToken cancellationToken)

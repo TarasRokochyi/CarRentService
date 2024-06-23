@@ -1,0 +1,21 @@
+﻿@page "/clients/{id:int}"
+@inject HttpClient Http
+
+<PageTitle>Client</PageTitle>
+
+<h3>Client: @client.FirstName @client.MiddleName @client.LastName</h3><br />
+<h4>Email: @client.Email</h4><br />
+<h4>Address: @client.Address</h4><br />
+<h4>Phone Number: @client.PhoneNumber</h4><br />
+
+@code {
+
+    [Parameter]
+    public int id { get; set; }
+    public ClientDTO client {get; set;}
+
+    protected override async Task OnInitializedAsync()
+    {
+        client = await Http.GetFromJsonAsync<ClientDTO>($"Clients/{id}");
+    }
+}
