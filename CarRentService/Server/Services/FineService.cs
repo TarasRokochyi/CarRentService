@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using CarRentService.Shared.DTOs;
 using CarRentService.Server.Models;
 using CarRentService.Server.Services.Contracts;
 using CarRentService.Server.UOF;
+using CarRentService.Shared.DTOs.Responses;
 
 namespace CarRentService.Server.Services
 {

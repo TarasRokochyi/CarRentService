@@ -34,7 +34,7 @@ else
                         <a href="clients/@client.Id" class="btn btn-info">Info</a>
                     </td>
                     <td>
-                        <button type="button" class="btn btn-danger">Delete</button>
+                        <button type="button" class="btn btn-danger" @onclick="(() => Delete(client.Id))">Delete</button>
                     </td>
                 </tr>
             }
@@ -45,8 +45,23 @@ else
 @code {
     private List<ShortClientDTO>? clients;
 
+    [Inject]
+    public NavigationManager NavManager { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
-        clients = await Http.GetFromJsonAsync<List<ShortClientDTO>>("Clients");
+        await Update();
+    }
+
+    public async Task Delete(int id)
+    {
+        await Http.DeleteAsync($"Clients/{id}");
+        await Update();
+    }
+
+    public async Task Update()
+    {
+        clients = Http.GetFromJsonAsync<List<ShortClientDTO>>("Clients").Result;
+
     }
 }

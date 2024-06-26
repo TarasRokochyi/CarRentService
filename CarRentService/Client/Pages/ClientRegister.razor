@@ -1,0 +1,70 @@
+﻿@page "/clients/register"
+@inject HttpClient Http
+
+<h3>Client Register</h3>
+
+<h2 class="text-success p-2">@FormSubmitMessage</h2>
+
+<EditForm Model="Client" OnValidSubmit="HandleValidSubmit" OnInvalidSubmit="HandleInvalidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label>First Name</label>
+        <ValidationMessage For="@(() => Client.FirstName)" />
+        <InputText class="form-control" @bind-Value="Client.FirstName" />
+    </div>
+    <div class="form-group">
+        <label>Last Name</label>
+        <ValidationMessage For="@(() => Client.LastName)" />
+        <InputText class="form-control" @bind-Value="Client.LastName" />
+    </div>
+    <div class="form-group">
+        <label>Middle Name</label>
+        <ValidationMessage For="@(() => Client.MiddleName)" />
+        <InputText class="form-control" @bind-Value="Client.MiddleName" />
+    </div>
+    <div class="form-group">
+        <label>Age</label>
+        <ValidationMessage For="@(() => Client.Age)" />
+        <InputNumber class="form-control" @bind-Value="Client.Age" />
+    </div>
+    <div class="form-group">
+        <label>Address</label>
+        <ValidationMessage For="@(() => Client.Address)" />
+        <InputText class="form-control" @bind-Value="Client.Address" />
+    </div>
+    <div class="form-group">
+        <label>Email</label>
+        <ValidationMessage For="@(() => Client.Email)" />
+        <InputText class="form-control" @bind-Value="Client.Email" />
+    </div>
+    <div class="form-group">
+        <label>Phone number</label>
+        <ValidationMessage For="@(() => Client.PhoneNumber)" />
+        <InputText class="form-control" @bind-Value="Client.PhoneNumber" />
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Click</button>
+    </div>
+</EditForm>
+
+@code {
+
+    public string FormSubmitMessage = "Form data not submitted";
+    public ClientRequestDTO Client = new ClientRequestDTO();
+
+    [Inject]
+    public NavigationManager NavManager { get; set; }
+
+    public async void HandleValidSubmit()
+    {
+        await Http.PostAsJsonAsync<ClientRequestDTO>("Clients", Client);
+        NavManager.NavigateTo("/allclients");
+    }
+
+    public void HandleInvalidSubmit()
+    {
+        FormSubmitMessage = "Invalid data submitted";
+    }
+}

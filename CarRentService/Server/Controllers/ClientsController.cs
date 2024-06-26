@@ -1,7 +1,8 @@
-﻿using CarRentService.Shared.DTOs;
-using CarRentService.Server.Repositories.Contracts;
+﻿using CarRentService.Server.Repositories.Contracts;
 using CarRentService.Server.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
+using CarRentService.Shared.DTOs.Responses;
+using CarRentService.Shared.DTOs.Requests;
 
 namespace CarRentService.Server.Controllers
 {
@@ -41,7 +42,7 @@ namespace CarRentService.Server.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<IEnumerable<ClientDTO>>> GetById(int id, CancellationToken cancellationToken)
+        public async Task<ActionResult<IEnumerable<ClientDTO>>> GetClientById(int id, CancellationToken cancellationToken)
         {
             var result = await _clientService.GetClientByIdAsync(id, cancellationToken);
             if(result == null)
@@ -55,5 +56,26 @@ namespace CarRentService.Server.Controllers
                 return Ok(result);
             }
         }
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> AddClient(ClientRequestDTO client, CancellationToken cancellationToken)
+        {
+            var created_client = await _clientService.AddClientToSystemAsync(client, cancellationToken);
+            this._logger.LogInformation($"added client to system {client.FirstName} {client.LastName}");
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> DeleteClientByIdAsync(int id, CancellationToken cancellationToken)
+        {
+            await _clientService.DeleteClientFromSystemAsync(id, cancellationToken);
+            _logger.LogInformation($"deleted client with id {id}");
+            return Ok();
+        }
+
     }
 }

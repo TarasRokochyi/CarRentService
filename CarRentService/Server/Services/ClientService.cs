@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
-using CarRentService.Shared.DTOs;
 using CarRentService.Server.Services.Contracts;
 using CarRentService.Server.UOF;
+using CarRentService.Shared.DTOs.Responses;
+using CarRentService.Shared.DTOs.Requests;
 
 namespace CarRentService.Server.Services
 {
@@ -16,7 +17,7 @@ namespace CarRentService.Server.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Models.Client> AddClientToSystemAsync(ClientDTO clientDTO, CancellationToken cancellationToken)
+        public async Task<Models.Client> AddClientToSystemAsync(ClientRequestDTO clientDTO, CancellationToken cancellationToken)
         {
             try
             {

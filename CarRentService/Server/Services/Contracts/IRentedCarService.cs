@@ -1,5 +1,5 @@
-﻿using CarRentService.Shared.DTOs;
-using CarRentService.Server.Models;
+﻿using CarRentService.Server.Models;
+using CarRentService.Shared.DTOs.Responses;
 
 namespace CarRentService.Server.Services.Contracts
 {

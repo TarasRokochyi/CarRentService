@@ -31,7 +31,6 @@ namespace CarRentService.Server.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IEnumerable<WeatherForecast> Get()
         {
-            var res = carRepository.AddAsync(new Car { Code = "kj31lkj", Brand = "nissan", Cost = 200409, RentalCost = 3000});
             context.SaveChanges();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {

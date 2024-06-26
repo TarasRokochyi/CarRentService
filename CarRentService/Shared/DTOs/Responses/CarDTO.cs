@@ -1,4 +1,4 @@
-﻿namespace CarRentService.Shared.DTOs
+﻿namespace CarRentService.Shared.DTOs.Responses
 {
     public class CarDTO
     {

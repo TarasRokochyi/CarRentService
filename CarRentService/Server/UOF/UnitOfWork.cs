@@ -13,12 +13,14 @@ namespace CarRentService.Server.UOF
         public IRentedCarRepository RentedCarRepository { get; }
 
         public UnitOfWork(
+            CarRentServiceContext context,
             ICarRepository carRepository,
             IClientRepository clientRepository,
             IFineRepository fineRepository,
             IRegularClientRepository regularClientRepository,
             IRentedCarRepository rentedCarRepository)
         {
+            this.context = context;
             CarRepository = carRepository;
             ClientRepository = clientRepository;
             FineRepository = fineRepository;

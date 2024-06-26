@@ -1,0 +1,50 @@
+﻿@page "/allcars"
+@inject HttpClient Http
+
+<h3>All Cars</h3>
+
+@if (cars == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Brand</th>
+                <th>Cost</th>
+                <th>Rental Cost</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var car in cars)
+            {
+                <tr>
+                    <td>@car.Id</td>
+                    <td>@car.Brand</td>
+                    <td>@car.Cost</td>
+                    <td>@car.RentalCost</td>
+                    <td>
+                        <a href="cars/@car.Id" class="btn btn-info">Info</a>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<ShortCarDTO>? cars;
+
+    protected override async Task OnInitializedAsync()
+    {
+        cars = await Http.GetFromJsonAsync<List<ShortCarDTO>>("cars");
+    }
+}

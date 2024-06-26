@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
-using CarRentService.Shared.DTOs;
 using CarRentService.Server.Models;
+using CarRentService.Shared.DTOs.Requests;
+using CarRentService.Shared.DTOs.Responses;
 
 namespace CarRentService.Server.AutomapperProfile
 {
@@ -13,6 +14,8 @@ namespace CarRentService.Server.AutomapperProfile
             CreateMap<Fine, FineDTO>().ReverseMap();
             CreateMap<RentedCar, RentedCarDTO>().ReverseMap();
             CreateMap<Models.Client, ShortClientDTO>().ReverseMap();
+            CreateMap<Car, ShortCarDTO>().ReverseMap();
+            CreateMap<Models.Client, ClientRequestDTO>().ReverseMap();
         }
     }
 }

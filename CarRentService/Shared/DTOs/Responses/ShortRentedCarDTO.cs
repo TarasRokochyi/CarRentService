@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CarRentService.Shared.DTOs
+namespace CarRentService.Shared.DTOs.Responses
 {
-    public class ShortCarDTO
+    public class ShortRentedCarDTO
     {
     }
 }
