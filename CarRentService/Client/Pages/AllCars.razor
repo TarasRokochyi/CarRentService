@@ -9,7 +9,7 @@
 }
 else
 {
-    <table class="table">
+    @*<table class="table">
         <thead>
             <tr>
                 <th>ID</th>
@@ -37,14 +37,23 @@ else
                 </tr>
             }
         </tbody>
-    </table>
+    </table>*@
+
+    @foreach (var car in cars)
+    {
+        <CarRentService.Client.Components.CardCar 
+        Car="@car"
+        >
+
+        </CarRentService.Client.Components.CardCar>
+    }
 }
 
 @code {
-    private List<ShortCarDTO>? cars;
+    private List<CardCarDTO>? cars;
 
     protected override async Task OnInitializedAsync()
     {
-        cars = await Http.GetFromJsonAsync<List<ShortCarDTO>>("cars");
+        cars = await Http.GetFromJsonAsync<List<CardCarDTO>>("cars");
     }
 }

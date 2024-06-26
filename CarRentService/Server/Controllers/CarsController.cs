@@ -1,5 +1,6 @@
 ﻿using CarRentService.Server.Services.Contracts;
 using CarRentService.Shared.DTOs.Responses;
+using CarRentService.Shared.DTOs.Requests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarRentService.Server.Controllers
@@ -21,7 +22,7 @@ namespace CarRentService.Server.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<IEnumerable<ShortCarDTO>>> GetAllCars(CancellationToken cancellationToken)
+        public async Task<ActionResult<IEnumerable<CardCarDTO>>> GetAllCars(CancellationToken cancellationToken)
         {
             var result = await _carService.GetAllCarsAsync(cancellationToken);
             if(result == null)
@@ -53,6 +54,16 @@ namespace CarRentService.Server.Controllers
                 _logger.LogInformation($"Received car from database");
                 return Ok(result);
             }
+        }
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<CarDTO>> AddCar(CarRequestDTO car, CancellationToken cancellationToken)
+        {
+            var created_client = await _carService.AddCarToSystemAsync(car, cancellationToken);
+            this._logger.LogInformation($"added car to system {car.VINCode}");
+            return Ok();
         }
     }
 }

@@ -61,7 +61,7 @@ else
 
     public async Task Update()
     {
-        clients = Http.GetFromJsonAsync<List<ShortClientDTO>>("Clients").Result;
+        clients = await Http.GetFromJsonAsync<List<ShortClientDTO>>("Clients");
 
     }
 }

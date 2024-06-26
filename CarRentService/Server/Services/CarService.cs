@@ -3,6 +3,8 @@ using CarRentService.Server.Models;
 using CarRentService.Server.Services.Contracts;
 using CarRentService.Server.UOF;
 using CarRentService.Shared.DTOs.Responses;
+using CarRentService.Shared.DTOs.Requests;
+using CarRentService.Server.Responses;
 
 namespace CarRentService.Server.Services
 {
@@ -10,19 +12,26 @@ namespace CarRentService.Server.Services
     {
         private readonly IMapper _mapper;
         private IUnitOfWork _unitOfWork;
+        private HttpClient Http;
 
         public CarService(IMapper mapper, IUnitOfWork unitOfWork)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            Http = new HttpClient();
         }
 
 
-        public async Task<Car> AddCarToSystemAsync(CarDTO carDTO, CancellationToken cancellationToken)
+        public async Task<Car> AddCarToSystemAsync(CarRequestDTO carDTO, CancellationToken cancellationToken)
         {
             try
             {
-                Car car = _mapper.Map<Car>(carDTO);
+                var carResponse = await Http.GetFromJsonAsync<CarResponse>($"https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/{carDTO.VINCode}?format=json");
+                //car.Model = carResponse.Results[0].Model;
+                var car = _mapper.Map<Car>(carResponse.Results[0]);
+                car.Cost = carDTO.Cost;
+                car.RentalCost = carDTO.RentalCost;
+                car.IsInUse = false;
                 var result = await _unitOfWork.CarRepository.AddAsync(car);
                 await _unitOfWork.CompleteAsync(cancellationToken);
                 return result;
@@ -52,10 +61,10 @@ namespace CarRentService.Server.Services
             }
         }
 
-        public async Task<IEnumerable<ShortCarDTO>> GetAllCarsAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<CardCarDTO>> GetAllCarsAsync(CancellationToken cancellationToken)
         {
             var all_cars = await _unitOfWork.CarRepository.GetAllAsync();
-            return _mapper.Map<IEnumerable<ShortCarDTO>>(all_cars);
+            return _mapper.Map<IEnumerable<CardCarDTO>>(all_cars);
         }
 
         public async Task<CarDTO> GetCarByIdAsync(int id, CancellationToken cancellationToken)

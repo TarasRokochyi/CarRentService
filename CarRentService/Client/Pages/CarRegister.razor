@@ -1,0 +1,48 @@
+﻿@page "/cars/register"
+@inject HttpClient Http
+
+<h3>CarRegister</h3>
+
+<EditForm Model="Car" OnValidSubmit="HandleValidSubmit" OnInvalidSubmit="HandleInvalidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label>VIN code</label>
+        <ValidationMessage For="@(() => Car.VINCode)" />
+        <InputText class="form-control" @bind-Value="Car.VINCode" />
+    </div>
+    <div class="form-group">
+        <label>Rental cost</label>
+        <ValidationMessage For="@(() => Car.RentalCost)" />
+        <InputNumber class="form-control" @bind-Value="Car.RentalCost" />
+    </div>
+    <div class="form-group">
+        <label>Cost</label>
+        <ValidationMessage For="@(() => Car.Cost)" />
+        <InputNumber class="form-control" @bind-Value="Car.Cost" />
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Click</button>
+    </div>
+</EditForm>
+
+@code {
+
+    public string FormSubmitMessage = "Form data not submitted";
+    public CarRequestDTO Car = new CarRequestDTO();
+
+    [Inject]
+    public NavigationManager NavManager { get; set; }
+
+    public async void HandleValidSubmit()
+    {
+        await Http.PostAsJsonAsync<CarRequestDTO>("Cars", Car);
+        NavManager.NavigateTo("/allcars");
+    }
+
+    public void HandleInvalidSubmit()
+    {
+        FormSubmitMessage = "Invalid data submitted";
+    }
+}

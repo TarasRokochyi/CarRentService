@@ -1,0 +1,17 @@
+﻿@page "/cars/{id:int}"
+@inject HttpClient Http
+
+<h3>Car</h3>
+
+@code {
+
+    [Parameter]
+    public int id { get; set; }
+
+    public CarDTO car { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        car = await Http.GetFromJsonAsync<CarDTO>($"Car/{id}");
+    }
+}

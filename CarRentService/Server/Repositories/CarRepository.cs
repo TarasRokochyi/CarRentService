@@ -12,7 +12,7 @@ namespace CarRentService.Server.Repositories
 
         public async Task<Car> GetByCodeAsync(string code)
         {
-            return await table.FirstAsync(c => c.Code == code);
+            return await table.FirstAsync(c => c.VIN == code);
         }
     }
 }

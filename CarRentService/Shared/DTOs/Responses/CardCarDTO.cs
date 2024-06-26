@@ -1,8 +1,13 @@
-﻿namespace CarRentService.Server.Models
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CarRentService.Shared.DTOs.Responses
 {
-    public class Car
+    public class CardCarDTO
     {
-        public int Id { get; set; }
         public string VIN { get; set; }
         public string Make { get; set; }
         public string Model { get; set; }
@@ -11,9 +16,5 @@
         public double Cost { get; set; }
         public double RentalCost { get; set; }
         public bool IsInUse { get; set; }
-
-        public List<RentedCar> RentedCars { get; set; }
-        // public string type {get; set;} or public string description {get; set;}
-
     }
 }
