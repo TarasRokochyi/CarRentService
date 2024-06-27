@@ -32,6 +32,8 @@ namespace CarRentService.Server.Models
             modelBuilder.Entity<RentedCar>().HasKey(b => b.Id);
 
             modelBuilder.Entity<RentedCar>().HasMany(r => r.Fines).WithMany(f => f.RentedCars).UsingEntity("temp_table");
+            modelBuilder.Entity<RentedCar>().HasOne(r => r.Car).WithMany(c => c.RentedCars);
+            modelBuilder.Entity<RentedCar>().HasOne(r => r.Client).WithMany(c => c.RentedCars);
         }
 
     }

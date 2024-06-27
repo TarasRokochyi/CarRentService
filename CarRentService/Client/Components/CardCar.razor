@@ -10,7 +10,7 @@
     <li class="list-group-item"><strong>VIN code:</strong> @car.VIN</li>
   </ul>
   <div class="card-body mx-auto">
-    <a href="#" class="btn btn-info">info</a>
+    <a href="cars/@car.Id" class="btn btn-info">info</a>
     @if (car.IsInUse) {
         <a href="#" class="btn btn-secondary mx-1 disabled">Not available</a>
     }

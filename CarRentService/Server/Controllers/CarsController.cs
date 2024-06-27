@@ -44,6 +44,7 @@ namespace CarRentService.Server.Controllers
         public async Task<ActionResult<CarDTO>> GetCarById(int id, CancellationToken cancellationToken)
         {
             var result = await _carService.GetCarByIdAsync(id, cancellationToken);
+            //_logger.LogInformation("this is slkdfjslkfjsl kjlsk jdlfksjf" + result.Trim);
             if(result == null)
             {
                 _logger.LogInformation($"There is no cars in database");
@@ -62,7 +63,7 @@ namespace CarRentService.Server.Controllers
         public async Task<ActionResult<CarDTO>> AddCar(CarRequestDTO car, CancellationToken cancellationToken)
         {
             var created_client = await _carService.AddCarToSystemAsync(car, cancellationToken);
-            this._logger.LogInformation($"added car to system {car.VINCode}");
+            this._logger.LogInformation($"added car to system {car.VIN}");
             return Ok();
         }
     }

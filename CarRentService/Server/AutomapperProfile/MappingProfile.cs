@@ -18,6 +18,7 @@ namespace CarRentService.Server.AutomapperProfile
             CreateMap<Car, CardCarDTO>().ReverseMap();
             CreateMap<Models.Client, ClientRequestDTO>().ReverseMap();
             CreateMap<Car, CarData>().ReverseMap();
+            CreateMap<CarDTO, CarData>().ReverseMap();
         }
     }
 }

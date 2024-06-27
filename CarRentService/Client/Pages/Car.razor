@@ -1,8 +1,68 @@
 ﻿@page "/cars/{id:int}"
 @inject HttpClient Http
 
-<h3>Car</h3>
+@if(car == null){
+    <p><em>Loading...</em></p>
+}
+else{
 
+    <div >
+        <h5 class=""><strong>@car.Make</strong></h5>
+        <li class=""><strong>Model:</strong> @car.Model</li>
+        <li class=""><strong>Model year</strong>: @car.ModelYear</li>
+        <li class=""><strong>Body class:</strong> @car.BodyClass</li>
+        <li class=""><strong>VIN code:</strong> @car.VIN</li>
+    </div>
+    <div class="mt-3 mb-2">
+        @if (car.IsInUse) {
+            <a href="#" class="btn btn-secondary mx-1 disabled">Not available</a>
+        }
+        else{
+            <a href="#" class="btn btn-primary mx-1">rent for @car.RentalCost$ a day</a>
+        }
+    </div>
+
+    <div class="btn-group mt-4" role="group" aria-label="Basic outlined example">
+        <button type="button" class="btn btn-outline-primary">All Characteristic</button>
+        <button type="button" class="btn btn-outline-primary">History of the vehicle</button>
+    </div>
+
+    @if (IsCharacteristic)
+    {
+        @if(car.Trim != null && car.Trim != "") { <li>Trim: @car.Trim</li> }
+        @if(car.EngineConfiguration != null && car.EngineConfiguration != "") { <li>Engine Configuration: @car.EngineConfiguration</li> }
+        @if(car.EngineModel != null && car.EngineModel != "") { <li>Engine Model: @car.EngineModel</li> }
+        @if(car.PlantCountry != null && car.PlantCountry != "") { <li>Plant Country: @car.PlantCountry</li> }
+        @if(car.FuelTypePrimary != null && car.FuelTypePrimary != "") { <li>Fuel Type Primary: @car.FuelTypePrimary</li> }
+        @if(car.DisplacementL != null && car.DisplacementL != "") { <li>DisplacementL: @car.DisplacementL</li> }
+        @if(car.TransmissionStyle != null && car.TransmissionStyle != "") { <li>Transmission Style: @car.TransmissionStyle</li> }
+        @if(car.TransmissionSpeeds != null && car.TransmissionSpeeds != "") { <li>TransmissionSpeeds: @car.TransmissionSpeeds</li> }
+        @if(car.Doors != null && car.Doors != "") { <li>Doors: @car.Doors</li> }
+        @if(car.Seats != null && car.Seats != "") { <li>Seats: @car.Seats</li> }
+        @if(car.SeatRows != null && car.SeatRows != "") { <li>Seat Rows: @car.SeatRows</li> }
+        @if(car.DriveType != null && car.DriveType != "") { <li>DriveType: @car.DriveType</li> }
+        @if(car.ABS != null && car.ABS != "") { <li>ABS: @car.ABS</li> }
+        @if(car.TractionControl != null && car.TractionControl != "") { <li>Traction Control: @car.TractionControl</li> }
+        @if(car.ESC != null && car.ESC != "") { <li>ESC: @car.ESC</li> }
+        @if(car.ParkAssist != null && car.ParkAssist != "") { <li>Park Assist: @car.ParkAssist</li> }
+        @if(car.BlindSpotMon != null && car.BlindSpotMon != "") { <li>Blind Spot Monitor: @car.BlindSpotMon</li> }
+        @if(car.ForwardCollisionWarning != null && car.ForwardCollisionWarning != "") { <li>Forward Collision Warning: @car.ForwardCollisionWarning</li> }
+        @if(car.LaneDepartureWarning != null && car.LaneDepartureWarning != "") { <li>Lane Departure Warning: @car.LaneDepartureWarning</li> }
+        @if(car.LaneKeepSystem != null && car.LaneKeepSystem != "") { <li>Lane Keep System: @car.LaneKeepSystem</li> }
+        @if(car.RearCrossTrafficAlert != null && car.RearCrossTrafficAlert != "") { <li>Rear Cross Traffic Alert: @car.RearCrossTrafficAlert</li> }
+        @if(car.DynamicBrakeSupport != null && car.DynamicBrakeSupport != "") { <li>Dynamic Brake Support: @car.DynamicBrakeSupport</li> }
+        @if(car.AutoReverseSystem != null && car.AutoReverseSystem != "") { <li>Auto Reverse System: @car.AutoReverseSystem</li> }
+        @if(car.RearVisibilitySystem != null && car.RearVisibilitySystem != "") { <li>Rear Visibility System: @car.RearVisibilitySystem</li> }
+        @if(car.DaytimeRunningLight != null && car.DaytimeRunningLight != "") { <li>Daytime Running Light: @car.DaytimeRunningLight</li> }
+        @if(car.LowerBeamHeadlampLightSource != null && car.LowerBeamHeadlampLightSource != "") { <li>Lower Beam Headlamp Light Source: @car.LowerBeamHeadlampLightSource</li> }
+        @if(car.KeylessIgnition != null && car.KeylessIgnition != "") { <li>Keyless Ignition: @car.KeylessIgnition</li> }
+        @if(car.TPMS != null && car.TPMS != "") { <li>TPMS: @car.TPMS</li> }
+    }
+    else
+    {
+        
+    }
+}
 @code {
 
     [Parameter]
@@ -10,8 +70,17 @@
 
     public CarDTO car { get; set; }
 
+    public bool IsCharacteristic = true;
+
+    //public Dictionary<String, String> dict { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
-        car = await Http.GetFromJsonAsync<CarDTO>($"Car/{id}");
+        car = await Http.GetFromJsonAsync<CarDTO>($"Cars/{id}");
+        Console.WriteLine("d" + car.Trim + "d   " + car.Trim);
+        //var response = await Http.GetAsync($"Cars/{id}");
+
+        //Console.WriteLine(response);
+        Console.WriteLine();
     }
 }

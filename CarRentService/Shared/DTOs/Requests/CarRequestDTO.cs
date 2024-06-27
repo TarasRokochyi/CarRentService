@@ -12,7 +12,7 @@ namespace CarRentService.Shared.DTOs.Requests
         [Required(ErrorMessage = "VIN code is required")]
         [MaxLength(17)]
         [MinLength(17)]
-        public string VINCode { get; set; }
+        public string VIN { get; set; }
 
         public double Cost { get; set; }
 

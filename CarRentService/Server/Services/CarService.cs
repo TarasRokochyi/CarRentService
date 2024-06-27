@@ -26,7 +26,7 @@ namespace CarRentService.Server.Services
         {
             try
             {
-                var carResponse = await Http.GetFromJsonAsync<CarResponse>($"https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/{carDTO.VINCode}?format=json");
+                var carResponse = await Http.GetFromJsonAsync<CarResponse>($"https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/{carDTO.VIN}?format=json");
                 //car.Model = carResponse.Results[0].Model;
                 var car = _mapper.Map<Car>(carResponse.Results[0]);
                 car.Cost = carDTO.Cost;
@@ -70,7 +70,16 @@ namespace CarRentService.Server.Services
         public async Task<CarDTO> GetCarByIdAsync(int id, CancellationToken cancellationToken)
         {
             var car = await _unitOfWork.CarRepository.GetByIdAsync(id);
-            return _mapper.Map<CarDTO>(car);
+
+            var carResponse = await Http.GetFromJsonAsync<CarResponse>($"https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/{car.VIN}?format=json");
+
+            //car.Model = carResponse.Results[0].Model;
+            var result = _mapper.Map<CarDTO>(carResponse.Results[0]);
+            result.Id = car.Id;
+            result.Cost = car.Cost;
+            result.RentalCost = car.RentalCost;
+            result.IsInUse = car.IsInUse;
+            return result;
         }
 
         public async Task<Car> UpdateCarInSystemAsync(int id, CarDTO carDTO, CancellationToken cancellationToken)
