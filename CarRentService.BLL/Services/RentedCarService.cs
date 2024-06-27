@@ -3,6 +3,7 @@ using CarRentService.BLL.Services.Contracts;
 using CarRentService.Shared.DTOs.Responses;
 using CarRentService.DAL.Models;
 using CarRentService.DAL.UOF;
+using CarRentService.Shared.DTOs.Requests;
 
 namespace CarRentService.BLL.Services
 {
@@ -17,11 +18,16 @@ namespace CarRentService.BLL.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<RentedCar> AddRentedCarToSystemAsync(RentedCarDTO rentedCarDTO, CancellationToken cancellationToken)
+        public async Task<RentedCar> AddRentedCarToSystemAsync(RentedCarRequestDTO rentedCarDTO, CancellationToken cancellationToken)
         {
             try
             {
+                var car = await _unitOfWork.CarRepository.GetByIdAsync(rentedCarDTO.CarId);
                 RentedCar rentedCar = _mapper.Map<RentedCar>(rentedCarDTO);
+
+                var days = (rentedCarDTO.ReturnDate - rentedCarDTO.RentDate).Days;
+                rentedCar.RentalCost = car.RentalCost * days;
+
                 var result = await _unitOfWork.RentedCarRepository.AddAsync(rentedCar);
                 await _unitOfWork.CompleteAsync(cancellationToken);
                 return result;
@@ -51,10 +57,10 @@ namespace CarRentService.BLL.Services
             }
         }
 
-        public async Task<IEnumerable<ShortRentedCarDTO>> GetAllRentedCarsAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<RentedCarDTO>> GetAllRentedCarsAsync(CancellationToken cancellationToken)
         {
             var all_rentedCars = await _unitOfWork.RentedCarRepository.GetAllAsync();
-            return _mapper.Map<IEnumerable<ShortRentedCarDTO>>(all_rentedCars);
+            return _mapper.Map<IEnumerable<RentedCarDTO>>(all_rentedCars);
         }
 
         public async Task<RentedCarDTO> GetRentedCarByIdAsync(int id, CancellationToken cancellationToken)

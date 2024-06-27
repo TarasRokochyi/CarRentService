@@ -10,13 +10,17 @@ namespace CarRentService.Server.AutomapperProfile
     {
         public MappingProfile()
         {
-            CreateMap<Car, CarDTO>().ReverseMap();
-            CreateMap<DAL.Models.Client, ClientDTO>().ReverseMap();
             CreateMap<Fine, FineDTO>().ReverseMap();
+
             CreateMap<RentedCar, RentedCarDTO>().ReverseMap();
+            CreateMap<RentedCar, RentedCarRequestDTO>().ReverseMap();
+
             CreateMap<DAL.Models.Client, ShortClientDTO>().ReverseMap();
-            CreateMap<Car, CardCarDTO>().ReverseMap();
+            CreateMap<DAL.Models.Client, ClientDTO>().ReverseMap();
             CreateMap<DAL.Models.Client, ClientRequestDTO>().ReverseMap();
+
+            CreateMap<Car, CarDTO>().ReverseMap();
+            CreateMap<Car, CardCarDTO>().ReverseMap();
             CreateMap<Car, CarData>().ReverseMap();
             CreateMap<CarDTO, CarData>().ReverseMap();
         }

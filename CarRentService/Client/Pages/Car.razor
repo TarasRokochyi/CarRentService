@@ -72,15 +72,8 @@ else{
 
     public bool IsCharacteristic = true;
 
-    //public Dictionary<String, String> dict { get; set; }
-
     protected override async Task OnInitializedAsync()
     {
         car = await Http.GetFromJsonAsync<CarDTO>($"Cars/{id}");
-        Console.WriteLine("d" + car.Trim + "d   " + car.Trim);
-        //var response = await Http.GetAsync($"Cars/{id}");
-
-        //Console.WriteLine(response);
-        Console.WriteLine();
     }
 }

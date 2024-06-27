@@ -38,8 +38,9 @@
     [Parameter]
     public int id { get; set; }
 
-    public CarDTO Car { get; set; }
+    //public CarDTO Car { get; set; }
 
+    [Inject]
     public NavigationManager NavManager { get; set; }
 
     public string FormSubmitMessage { get; set; }
@@ -48,10 +49,10 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Car = await Http.GetFromJsonAsync<CarDTO>($"cars/{id}");
+        //Car = await Http.GetFromJsonAsync<CarDTO>($"cars/{id}");
         rentedCar.CarId = id;
-        rentedCar.RentDate = DateTime.Now;
-        rentedCar.ReturnDate = DateTime.Now;
+        rentedCar.RentDate = DateTime.Today;
+        rentedCar.ReturnDate = DateTime.Today;
     }
 
     public async void HandleValidSubmit()
@@ -61,8 +62,8 @@
             FormSubmitMessage = "Invalid data submitted";
         }
         else{
-            await Http.PostAsJsonAsync<RentedCarRequestDTO>("Cars", rentedCar);
-            NavManager.NavigateTo("/allcars");
+            await Http.PostAsJsonAsync<RentedCarRequestDTO>("rentedcars", rentedCar);
+            NavManager.NavigateTo("/allrents");
         }
     }
 

@@ -1,8 +1,68 @@
 ﻿@page "/allrents"
 @inject HttpClient Http
 
-<h3>AllRents</h3>
+<h3>All Rented Cars</h3>
+
+@if (rentedCars == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Client Name</th>
+                <th>Car Model</th>
+                <th>Rental Cost</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var rentedCar in rentedCars)
+            {
+                <tr>
+                    <td>@rentedCar.Id</td>
+                    <td>@rentedCar.Client.FirstName @rentedCar.Client.LastName</td>
+                    <td>@rentedCar.Car.Make @rentedCar.Car.Model</td>
+                    <td>@rentedCar.RentalCost$</td>
+                    <td>
+                        <a href="clients/@rentedCar.Client.Id" class="btn btn-info">Client Info</a>
+                    </td>
+                    <td>
+                        <a href="cars/@rentedCar.Car.Id" class="btn btn-info">Car Info</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 @code {
+    private List<RentedCarDTO>? rentedCars;
 
+    [Inject]
+    public NavigationManager NavManager { get; set; }
+
+    public ShortClientDTO client { get; set; }
+
+    public CardCarDTO car { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        rentedCars = await Http.GetFromJsonAsync<List<RentedCarDTO>>("rentedcars");
+    }
+
+    //public async Task Delete(int id)
+    //{
+    //    await Http.DeleteAsync($"Clients/{id}");
+    //    await Update();
+    //}
+
+    //public async Task Update()
+    //{
+
+    //}
 }
