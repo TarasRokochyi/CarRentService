@@ -1,5 +1,4 @@
-﻿using CarRentService.Server.Repositories.Contracts;
-using CarRentService.Server.Services.Contracts;
+﻿using CarRentService.BLL.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using CarRentService.Shared.DTOs.Responses;
 using CarRentService.Shared.DTOs.Requests;

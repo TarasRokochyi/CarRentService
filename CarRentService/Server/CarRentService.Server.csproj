@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\CarRentService.BLL\CarRentService.BLL.csproj" />
     <ProjectReference Include="..\..\CarRentService.DAL\CarRentService.DAL.csproj" />
     <ProjectReference Include="..\Client\CarRentService.Client.csproj" />
     <ProjectReference Include="..\Shared\CarRentService.Shared.csproj" />

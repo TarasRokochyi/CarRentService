@@ -1,5 +1,5 @@
-using CarRentService.Server.Models;
-using CarRentService.Server.Repositories.Contracts;
+using CarRentService.DAL.Models;
+using CarRentService.DAL.Repositories.Contracts;
 using CarRentService.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

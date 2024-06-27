@@ -1,13 +1,13 @@
 using CarRentService.Server.AutomapperProfile;
-using CarRentService.Server.Models;
-using CarRentService.Server.Repositories;
-using CarRentService.Server.Repositories.Contracts;
-using CarRentService.Server.Services;
-using CarRentService.Server.Services.Contracts;
-using CarRentService.Server.UOF;
+using CarRentService.BLL.Services;
+using CarRentService.BLL.Services.Contracts;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using CarRentService.DAL.Models;
+using CarRentService.DAL.Repositories.Contracts;
+using CarRentService.DAL.Repositories;
+using CarRentService.DAL.UOF;
 
 namespace CarRentService
 {
