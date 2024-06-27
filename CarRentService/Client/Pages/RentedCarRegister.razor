@@ -1,0 +1,73 @@
+﻿@page "/rents/register/{id:int}"
+@inject HttpClient Http
+
+<h3>Rent Register</h3>
+
+<h2 class="text-success p-2">@FormSubmitMessage</h2>
+
+<EditForm Model="rentedCar" OnValidSubmit="HandleValidSubmit" OnInvalidSubmit="HandleInvalidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label>Car Id</label>
+        <ValidationMessage For="@(() => rentedCar.CarId)" />
+        <InputNumber class="form-control" @bind-Value="rentedCar.CarId" disabled/>
+    </div>
+    <div class="form-group">
+        <label>Client Id</label>
+        <ValidationMessage For="@(() => rentedCar.ClientId)" />
+        <InputNumber class="form-control" @bind-Value="rentedCar.ClientId" />
+    </div>
+    <div class="form-group">
+        <label>Rent Date</label>
+        <ValidationMessage For="@(() => rentedCar.RentDate)" />
+        <InputDate class="form-control" @bind-Value="rentedCar.RentDate" />
+    </div>
+    <div class="form-group">
+        <label>Return Date</label>
+        <ValidationMessage For="@(() => rentedCar.ReturnDate)" />
+        <InputDate class="form-control" @bind-Value="rentedCar.ReturnDate" />
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Click</button>
+    </div>
+</EditForm>
+@code {
+
+    [Parameter]
+    public int id { get; set; }
+
+    public CarDTO Car { get; set; }
+
+    public NavigationManager NavManager { get; set; }
+
+    public string FormSubmitMessage { get; set; }
+
+    public RentedCarRequestDTO rentedCar = new RentedCarRequestDTO();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Car = await Http.GetFromJsonAsync<CarDTO>($"cars/{id}");
+        rentedCar.CarId = id;
+        rentedCar.RentDate = DateTime.Now;
+        rentedCar.ReturnDate = DateTime.Now;
+    }
+
+    public async void HandleValidSubmit()
+    {
+        if (rentedCar.RentDate > rentedCar.ReturnDate)
+        {
+            FormSubmitMessage = "Invalid data submitted";
+        }
+        else{
+            await Http.PostAsJsonAsync<RentedCarRequestDTO>("Cars", rentedCar);
+            NavManager.NavigateTo("/allcars");
+        }
+    }
+
+    public void HandleInvalidSubmit()
+    {
+        FormSubmitMessage = "Invalid data submitted";
+    }
+}

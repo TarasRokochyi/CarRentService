@@ -12,6 +12,8 @@
         public int ClientId { get; set; }
         public Client Client { get; set; }
 
+        public double RentalCost { get; set; }
+
         public List<Fine> Fines { get; set; }
     }
 }
