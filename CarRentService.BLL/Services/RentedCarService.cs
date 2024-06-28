@@ -28,6 +28,8 @@ namespace CarRentService.BLL.Services
                 var days = (rentedCarDTO.ReturnDate - rentedCarDTO.RentDate).Days;
                 rentedCar.RentalCost = car.RentalCost * days;
 
+                rentedCar.IsReturned = false;
+
                 var result = await _unitOfWork.RentedCarRepository.AddAsync(rentedCar);
                 await _unitOfWork.CompleteAsync(cancellationToken);
                 return result;
@@ -36,6 +38,12 @@ namespace CarRentService.BLL.Services
             {
                 throw new Exception("error while adding rentedCar to system, in rentedCar service");
             }
+        }
+        public async Task<RentedCarDTO> GetCarByIdAsync(int id, CancellationToken cancellationToken)
+        {
+            var rentedCar = await _unitOfWork.RentedCarRepository.GetByIdAsync(id);
+            var result = _mapper.Map<RentedCarDTO>(rentedCar);
+            return result;
         }
 
         public async Task DeleteRentedCarInSystemAsync(int id, CancellationToken cancellationToken)
@@ -67,6 +75,25 @@ namespace CarRentService.BLL.Services
         {
             var rented_car = await _unitOfWork.RentedCarRepository.GetByIdAsync(id);
             return _mapper.Map<RentedCarDTO>(rented_car);
+        }
+
+        public async Task<RentedCarDTO> ReturnUpdateRentedCarInSystemAsync(int id, CancellationToken cancellationToken)
+        {
+            var rentedCar = await _unitOfWork.RentedCarRepository.GetByIdAsync(id);
+            if(rentedCar == null)
+            {
+                throw new Exception($"RentedCar with {id} cannot be found");
+            }
+            rentedCar.IsReturned = true;
+            if(rentedCar.ReturnDate < DateTime.Today)
+            {
+                var fine = await _unitOfWork.FineRepository.GetByIdAsync(1);
+                rentedCar.RentalCost += fine.Amount;
+            }
+            await _unitOfWork.RentedCarRepository.UpdateAsync(rentedCar);
+            await _unitOfWork.CompleteAsync(cancellationToken);
+            var result = await _unitOfWork.RentedCarRepository.GetByIdAsync(id);
+            return _mapper.Map<RentedCarDTO>(result);
         }
 
         public async Task<RentedCar> UpdateRentedCarInSystemAsync(int id, RentedCarDTO rentedCarDTO, CancellationToken cancellationToken)

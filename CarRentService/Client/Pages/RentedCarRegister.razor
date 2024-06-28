@@ -22,7 +22,7 @@
     <div class="form-group">
         <label>Rent Date</label>
         <ValidationMessage For="@(() => rentedCar.RentDate)" />
-        <InputDate class="form-control" @bind-Value="rentedCar.RentDate" />
+        <InputDate class="form-control" @bind-Value="rentedCar.RentDate" disabled/>
     </div>
     <div class="form-group">
         <label>Return Date</label>

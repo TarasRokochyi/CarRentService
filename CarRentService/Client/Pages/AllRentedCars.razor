@@ -18,6 +18,7 @@ else
                 <th>Rental Cost</th>
                 <th></th>
                 <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -33,6 +34,16 @@ else
                     </td>
                     <td>
                         <a href="cars/@rentedCar.Car.Id" class="btn btn-info">Car Info</a>
+                    </td>
+                    <td>
+                        @if (rentedCar.IsReturned)
+                        {
+                            <a href="#" class="btn btn-secondary" disabled>Returned</a>
+                        }
+                        else
+                        {
+                            <button @onclick="(() => ReturnACar(rentedCar.Id))" class="btn btn-success">Return</button>
+                        }
                     </td>
                 </tr>
             }
@@ -52,7 +63,18 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        rentedCars = await Http.GetFromJsonAsync<List<RentedCarDTO>>("rentedcars");
+        rentedCars = await Http.GetFromJsonAsync<List<RentedCarDTO>>("rentedcars?entityId=0");
+    }
+
+    public async void ReturnACar(int id)
+    {
+        var responseMessage = await Http.PutAsync($"rentedCars/{id}", null);
+        var rentedCarResponse = await responseMessage.Content.ReadFromJsonAsync<RentedCarDTO>();
+
+        var rentToChange = rentedCars.Where(r => r.Id == id).FirstOrDefault();
+        rentToChange.IsReturned = rentedCarResponse.IsReturned;
+        rentToChange.RentalCost = rentedCarResponse.RentalCost;
+        StateHasChanged();
     }
 
     //public async Task Delete(int id)

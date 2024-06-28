@@ -11,5 +11,6 @@ namespace CarRentService.BLL.Services.Contracts
         Task DeleteRentedCarInSystemAsync(int Id,  CancellationToken cancellationToken);
         Task<IEnumerable<RentedCarDTO>> GetAllRentedCarsAsync(CancellationToken cancellationToken, string entityHistory = null, int entityId = 0, string orderby = null);
         Task<RentedCarDTO> GetRentedCarByIdAsync(int id, CancellationToken cancellationToken);
+        Task<RentedCarDTO> ReturnUpdateRentedCarInSystemAsync(int id, CancellationToken cancellationToken);
     }
 }

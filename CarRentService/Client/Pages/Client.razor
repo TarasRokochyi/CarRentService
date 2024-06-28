@@ -8,11 +8,11 @@
 else{
     <div >
         <h5 class=""><strong>@client.FirstName @client.MiddleName @client.LastName</strong></h5>
-        <li class=""><strong>Age:</strong> @client.Age</li>
-        <li class=""><strong>Email:</strong> @client.Email</li>
-        <li class=""><strong>Address: </strong>: @client.Address</li>
-        <li class=""><strong>Phone number:</strong> @client.PhoneNumber</li>
-        <li class=""><strong>Client Id:</strong> @client.Id</li>
+        <li class=""><strong>Age: </strong>@client.Age</li>
+        <li class=""><strong>Email: </strong>@client.Email</li>
+        <li class=""><strong>Address: </strong>@client.Address</li>
+        <li class=""><strong>Phone number: </strong>@client.PhoneNumber</li>
+        <li class=""><strong>Client Id: </strong>@client.Id</li>
     </div>
 
     <div class="mt-4">
@@ -26,6 +26,7 @@ else{
                 <th>Client Name</th>
                 <th>Car Model</th>
                 <th>Rental Cost</th>
+                <th></th>
                 <th></th>
                 <th></th>
             </tr>
@@ -43,6 +44,16 @@ else{
                 </td>
                 <td>
                     <a href="cars/@rentHistory.Car.Id" class="btn btn-info">Car Info</a>
+                </td>
+                <td>
+                    @if (rentHistory.IsReturned)
+                    {
+                        <a href="#" class="btn btn-secondary" disabled>Returned</a>
+                    }
+                    else
+                    {
+                        <a href="#" class="btn btn-success">Return</a>
+                    }
                 </td>
             </tr>
         }
