@@ -22,9 +22,9 @@ else{
         }
     </div>
 
-    <div class="btn-group mt-4" role="group" aria-label="Basic outlined example">
-        <button type="button" class="btn btn-outline-primary">All Characteristic</button>
-        <button type="button" class="btn btn-outline-primary">History of the vehicle</button>
+    <div class="btn-group mt-4 mb-1" role="group" aria-label="Basic outlined example">
+        <button type="button" class="btn btn-outline-primary" @onclick="ShowCharacteristic">All Characteristic</button>
+        <button type="button" class="btn btn-outline-primary" @onclick="ShowHistory">History of the vehicle</button>
     </div>
 
     @if (IsCharacteristic)
@@ -60,7 +60,35 @@ else{
     }
     else
     {
-        
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Client Name</th>
+                    <th>Car Model</th>
+                    <th>Rental Cost</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach(var rentHistory in history)
+            {
+                <tr>
+                    <td>@rentHistory.Id</td>
+                    <td>@rentHistory.Client.FirstName @rentHistory.Client.LastName</td>
+                    <td>@rentHistory.Car.Make @rentHistory.Car.Model</td>
+                    <td>@rentHistory.RentalCost$</td>
+                    <td>
+                        <a href="clients/@rentHistory.Client.Id" class="btn btn-info">Client Info</a>
+                    </td>
+                    <td>
+                        <a href="cars/@rentHistory.Car.Id" class="btn btn-info">Car Info</a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
     }
 }
 @code {
@@ -71,9 +99,21 @@ else{
     public CarDTO car { get; set; }
 
     public bool IsCharacteristic = true;
+    public List<RentedCarDTO> history { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         car = await Http.GetFromJsonAsync<CarDTO>($"Cars/{id}");
+        history = await Http.GetFromJsonAsync<List<RentedCarDTO>>($"rentedCars?entityHistory=car&entityId=" + car.Id + "&orderby=");
+    }
+
+    public void ShowHistory()
+    {
+        IsCharacteristic = false;
+    }
+    public void ShowCharacteristic()
+    {
+        IsCharacteristic = true;
     }
 }
+

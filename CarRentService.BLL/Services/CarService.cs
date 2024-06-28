@@ -71,15 +71,19 @@ namespace CarRentService.BLL.Services
         public async Task<CarDTO> GetCarByIdAsync(int id, CancellationToken cancellationToken)
         {
             var car = await _unitOfWork.CarRepository.GetByIdAsync(id);
-
-            var carResponse = await Http.GetFromJsonAsync<CarResponse>($"https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/{car.VIN}?format=json");
-
-            //car.Model = carResponse.Results[0].Model;
-            var result = _mapper.Map<CarDTO>(carResponse.Results[0]);
-            result.Id = car.Id;
-            result.Cost = car.Cost;
-            result.RentalCost = car.RentalCost;
-            result.IsInUse = car.IsInUse;
+            CarDTO result;
+            try { 
+                var carResponse = await Http.GetFromJsonAsync<CarResponse>($"https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/{car.VIN}?format=json");
+                result = _mapper.Map<CarDTO>(carResponse.Results[0]);
+                result.Id = car.Id;
+                result.Cost = car.Cost;
+                result.RentalCost = car.RentalCost;
+                result.IsInUse = car.IsInUse;
+            }
+            catch(Exception ex)
+            {
+                result = _mapper.Map<CarDTO>(car);
+            }
             return result;
         }
 

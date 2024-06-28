@@ -2,20 +2,64 @@
 @inject HttpClient Http
 
 <PageTitle>Client</PageTitle>
+@if(client == null) {
+    <p><em>Loading...</em></p>
+}
+else{
+    <div >
+        <h5 class=""><strong>@client.FirstName @client.MiddleName @client.LastName</strong></h5>
+        <li class=""><strong>Age:</strong> @client.Age</li>
+        <li class=""><strong>Email:</strong> @client.Email</li>
+        <li class=""><strong>Address: </strong>: @client.Address</li>
+        <li class=""><strong>Phone number:</strong> @client.PhoneNumber</li>
+        <li class=""><strong>Client Id:</strong> @client.Id</li>
+    </div>
 
-<h3>Client: @client.FirstName @client.MiddleName @client.LastName</h3><br />
-<h4>Email: @client.Email</h4><br />
-<h4>Address: @client.Address</h4><br />
-<h4>Phone Number: @client.PhoneNumber</h4><br />
+    <div class="mt-4">
+        <h5><strong>Client History</strong></h5>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Client Name</th>
+                <th>Car Model</th>
+                <th>Rental Cost</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach(var rentHistory in history)
+        {
+            <tr>
+                <td>@rentHistory.Id</td>
+                <td>@rentHistory.Client.FirstName @rentHistory.Client.LastName</td>
+                <td>@rentHistory.Car.Make @rentHistory.Car.Model</td>
+                <td>@rentHistory.RentalCost$</td>
+                <td>
+                    <a href="clients/@rentHistory.Client.Id" class="btn btn-info">Client Info</a>
+                </td>
+                <td>
+                    <a href="cars/@rentHistory.Car.Id" class="btn btn-info">Car Info</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
 
 @code {
 
     [Parameter]
     public int id { get; set; }
     public ClientDTO client {get; set;}
+    public List<RentedCarDTO> history { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         client = await Http.GetFromJsonAsync<ClientDTO>($"Clients/{id}");
+        history = await Http.GetFromJsonAsync<List<RentedCarDTO>>($"rentedCars?entityHistory=client&entityId=" + client.Id + "&orderby=");
     }
 }

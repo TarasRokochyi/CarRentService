@@ -11,9 +11,18 @@ namespace CarRentService.DAL.Repositories
         {
         }
 
-        public override async Task<IEnumerable<RentedCar>> GetAllAsync()
+        public async Task<IEnumerable<RentedCar>> GetAllAsync(string entityHistory, int entityId, string orderby)
         {
-            return await context.RentedCars.Include(r => r.Client).Include(r => r.Car).ToListAsync();
+            IQueryable<RentedCar> query = context.RentedCars;
+            if (entityHistory == "car" && entityId != 0)
+                query = query.Where(r => r.CarId == entityId);
+
+            if(entityHistory == "client" && entityId != 0)
+                query = query.Where(r => r.ClientId == entityId);
+
+            query = query.Include(r => r.Car).Include(r => r.Client);
+
+            return await query.ToListAsync();
         }
     }
 }

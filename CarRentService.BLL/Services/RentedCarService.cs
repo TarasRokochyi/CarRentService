@@ -57,9 +57,9 @@ namespace CarRentService.BLL.Services
             }
         }
 
-        public async Task<IEnumerable<RentedCarDTO>> GetAllRentedCarsAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<RentedCarDTO>> GetAllRentedCarsAsync(CancellationToken cancellationToken, string entityHistory = null, int entityId = 0, string orderby = null)
         {
-            var all_rentedCars = await _unitOfWork.RentedCarRepository.GetAllAsync();
+            var all_rentedCars = await _unitOfWork.RentedCarRepository.GetAllAsync(entityHistory, entityId, orderby);
             return _mapper.Map<IEnumerable<RentedCarDTO>>(all_rentedCars);
         }
 

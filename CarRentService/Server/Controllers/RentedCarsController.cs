@@ -22,9 +22,9 @@ namespace CarRentService.Server.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<IEnumerable<RentedCarDTO>>> GetAllRentedCars(CancellationToken cancellationToken)
+        public async Task<ActionResult<IEnumerable<RentedCarDTO>>> GetAllRentedCars(CancellationToken cancellationToken, [FromQuery]string entityHistory = "", [FromQuery]int entityId = 0, [FromQuery]string? orderby = "")
         {
-            var result = await _rentedCarService.GetAllRentedCarsAsync(cancellationToken);
+            var result = await _rentedCarService.GetAllRentedCarsAsync( cancellationToken, entityHistory, entityId, orderby);
             if(result == null)
             {
                 _logger.LogInformation($"There is no rented cars in database");
